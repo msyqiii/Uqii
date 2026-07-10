@@ -1,0 +1,548 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Uqii's Love Dashboard ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-shadow: none;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Background Gelap Maskulin dengan Animasi Gradasi */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #334155);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 15px;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Efek Getar Layar Gahar */
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-3px, -2px) rotate(-1deg); }
+            20% { transform: translate(3px, 2px) rotate(1deg); }
+            30% { transform: translate(-2px, 3px) rotate(0deg); }
+            40% { transform: translate(2px, -2px) rotate(1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        body.shake-active {
+            animation: shake 0.25s ease-in-out;
+        }
+
+        /* Kotak Dashboard Utama Modern & Maskulin */
+        .dashboard {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin: auto 0;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 12px;
+            text-align: left;
+            padding-left: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* 1. MOOD PICKER COWO */
+        .mood-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .mood-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 12px 5px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .mood-box span {
+            display: block;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .mood-box p {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .mood-box.active {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .mood-box.active p {
+            color: #38bdf8;
+        }
+
+        /* 2. PROGRESS BAR KANGEN */
+        .bucin-wrapper {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bucin-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .bucin-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: #334155;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .bucin-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            transition: transform 0.1s;
+        }
+
+        /* 3. RADAR KANGEN BUTTON */
+        .buzzer-wrapper {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-buzzer {
+            background: radial-gradient(circle, #0284c7, #38bdf8);
+            color: white;
+            border: none;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            font-size: 2.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            display: block;
+            margin: 15px auto;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .btn-buzzer:active {
+            transform: scale(0.92);
+            box-shadow: 0 0 5px rgba(56, 189, 248, 0.2);
+        }
+
+        #buzzer-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #38bdf8;
+            min-height: 20px;
+            margin-top: 10px;
+        }
+
+        /* 4. EMERGENCY & NOTES */
+        .action-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-emergency {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px dashed #ef4444;
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-emergency:active {
+            background: rgba(239, 68, 68, 0.1);
+            transform: scale(0.98);
+        }
+
+        .note-section {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .note-input {
+            width: 100%;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #f1f5f9;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .note-input:focus {
+            border-color: #38bdf8;
+        }
+
+        .btn-send-note {
+            background: #0284c7;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        /* TOAST NOTIFIKASI KUSTOM */
+        .toast-container {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            padding: 12px 24px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: max-content;
+            max-width: 90vw;
+        }
+
+        .toast-container.show { top: 25px; }
+        .toast-msg { font-size: 0.85rem; font-weight: 600; color: #f1f5f9; }
+
+        /* ANIMASI NOTIFIKASI KILAT/PETIR KUSTOM */
+        .spark-drop {
+            position: fixed;
+            pointer-events: none;
+            z-index: 5;
+            font-size: 1.2rem;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: translateY(0px) scale(1); }
+            100% { transform: translateY(105vh) rotate(180deg) scale(0.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-toast" class="toast-container">
+        <span id="toast-icon">⚡</span>
+        <span id="toast-msg" class="toast-msg">Notifikasi Terkirim!</span>
+    </div>
+
+    <div class="dashboard">
+        <div class="header">
+            <h1>Uqii's Personal Space ⚡</h1>
+            <p>Uqii's live interaction dashboard for Zaraaa</p>
+        </div>
+
+        <div class="section-title">📊 Kondisi / Mood Uqii Hari Ini</div>
+        <div class="mood-container">
+            <div class="mood-box" onclick="pilihMood(this, '😎 Santai/Aman')">
+                <span>😎</span>
+                <p>Santai</p>
+            </div>
+            <div class="mood-box" onclick="pilihMood(this, '🥱 Ngantuk')">
+                <span>🥱</span>
+                <p>Ngantuk</p>
+            </div>
+            <div class="mood-box" onclick="pilihMood(this, '👾 Sibuk/Fokus')">
+                <span>👾</span>
+                <p>Fokus Game/Kerja</p>
+            </div>
+            <div class="mood-box" onclick="pilihMood(this, '🤕 Low Bat/Capek')">
+                <span>🤕</span>
+                <p>Drop/Capek</p>
+            </div>
+        </div>
+
+        <div class="section-title">📈 Sinyal Kangen ke Zaraaa</div>
+        <div class="bucin-wrapper">
+            <div class="bucin-header">
+                <span>Biasa</span>
+                <span id="bucin-val" style="color: #38bdf8; font-size: 0.9rem;">50%</span>
+                <span>Kangen Poll! ⚡</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="50" class="bucin-slider" id="love-slider" oninput="updateBucin(this.value)">
+            </div>
+        </div>
+
+        <div class="section-title">🛰️ Kangen Radar</div>
+        <div class="buzzer-wrapper">
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 5px;">Pencet ini untuk nge-ping Zaraaa kalau tiba-tiba kepikiran!</p>
+            <button class="btn-buzzer" onclick="pencetBuzzer()">📡</button>
+            <p id="buzzer-text"></p>
+        </div>
+
+        <div class="section-title">🚨 Mode Darurat</div>
+        <div class="action-container">
+            <button class="btn-emergency" onclick="panggilDarurat()">
+                <span>⚠️</span> Butuh Support / Hug 🫂
+            </button>
+        </div>
+
+        <div class="section-title">💬 Papan Pesan Singkat</div>
+        <div class="note-section">
+            <textarea class="note-input" id="note-text" rows="2" placeholder="Tulis pesan random, kabaran, atau titipan buat Zaraaa di sini..."></textarea>
+            <button class="btn-send-note" onclick="kirimCatatan()">Kirim Pesan Ke Zaraaa ⚡</button>
+        </div>
+    </div>
+
+    <script>
+        // TEMPELKAN URL WEBHOOK DISCORD PUNYA ZARAAA DI SINI
+        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
+
+        let dataDashboard = {
+            mood: "Belum disetel 📋",
+            levelKangen: "50%",
+            buzzerTerakhir: "Radar belum diaktifkan",
+            sinyalDarurat: "Kondisi Stabil dan Aman ✅",
+            catatanTerakhir: "Belum ada pesan tertinggal"
+        };
+
+        const teksBuzzer = [
+            "Uqii tiba-tiba kepikiran Zaraaa nih! 📡⚡",
+            "Nge-ping Zaraaa bentar, lagi ngapain yaa di sana? 🤔",
+            "Sinyal kangen terdeteksi meluncur cepat ke HP Zaraaa! 🚀",
+            "Hehe ga ada apa-apa, cuma mau usil nge-ping ajaaa 😜"
+        ];
+
+        function showToast(message, icon = "⚡") {
+            const toast = document.getElementById("custom-toast");
+            document.getElementById("toast-msg").innerText = message;
+            document.getElementById("toast-icon").innerText = icon;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+
+        function triggerScreenShake() {
+            document.body.classList.remove("shake-active");
+            void document.body.offsetWidth; 
+            document.body.classList.add("shake-active");
+        }
+
+        function buatHujanKilat(jumlah = 15) {
+            const sparks = ["⚡", "✨", "📡", "💙", "🔥"];
+            for (let i = 0; i < jumlah; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement("div");
+                    spark.classList.add("spark-drop");
+                    spark.innerText = sparks[Math.floor(Math.random() * sparks.length)];
+                    spark.style.left = Math.random() * 100 + "vw";
+                    spark.style.animationDuration = (Math.random() * 1.5 + 1) + "s";
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 2500);
+                }, i * 50);
+            }
+        }
+
+        function updateBucin(val) {
+            dataDashboard.levelKangen = val + "%";
+            document.getElementById("bucin-val").innerText = dataDashboard.levelKangen;
+        }
+
+        document.getElementById("love-slider").addEventListener("change", function() {
+            showToast(`Sinyal kangen dikalibrasi: ${dataDashboard.levelKangen}`, "📈");
+            syncKeDiscord("📈 LOG KANGEN DIUPDATE");
+        });
+
+        function pilihMood(elemen, namaMood) {
+            document.querySelectorAll('.mood-box').forEach(box => box.classList.remove('active'));
+            elemen.classList.add('active');
+            dataDashboard.mood = namaMood;
+            showToast(`Status disetel: ${namaMood}`, "📊");
+            syncKeDiscord("📊 UPDATE STATUS AKTIVITAS");
+        }
+
+        function pencetBuzzer() {
+            triggerScreenShake();
+            buatHujanKilat(20);
+            const index = Math.floor(Math.random() * teksBuzzer.length);
+            const pesan = teksBuzzer[index];
+            document.getElementById("buzzer-text").innerText = pesan;
+            dataDashboard.buzzerTerakhir = `📡 Radar Aktif: _"${pesan}"_`;
+            syncKeDiscord("🛰️ RADAR PING EMITTED");
+        }
+
+        function panggilDarurat() {
+            triggerScreenShake();
+            buatHujanKilat(30);
+            dataDashboard.sinyalDarurat = "🚨 ATTENTION: Uqii butuh support mental / virtual hug segera! 🫂💙";
+            showToast("Sinyal darurat dikirim ke Discord Zaraaa!", "⚠️");
+            syncKeDiscord("🚨 COWORKER EMERGENCY SIGNAL");
+            
+            setTimeout(() => {
+                dataDashboard.sinyalDarurat = "Kondisi Stabil dan Aman ✅";
+                syncKeDiscord("🚨 EMERGENCY STATUS CLEARED");
+            }, 10000);
+        }
+
+        function kirimCatatan() {
+            const input = document.getElementById("note-text");
+            const isi = input.value.trim();
+            if (isi === "") {
+                showToast("Tulis pesannya dulu brooo~", "⚠️");
+                return;
+            }
+            dataDashboard.catatanTerakhir = isi;
+            showToast("Pesan berhasil dikirim!", "📌");
+            input.value = "";
+            syncKeDiscord("📌 NEW MESSAGE DROPPED");
+        }
+
+        // SISTEM UTAMA: OPSI 1 (EDIT SATU PESAN TERPUSAT DI DISCORD)
+        function syncKeDiscord(aksiTerakhir) {
+            const msgId = localStorage.getItem("uqii_discord_msg_id");
+
+            const embedData = {
+                content: `⚡ **Uqii's Dashboard Connection Log** | _Aksi: ${aksiTerakhir}_`,
+                embeds: [{
+                    title: "🤖 UQII'S STATUS PROFILE ROOM",
+                    description: "Status aktivitas, mood, dan kangen Uqii terintegrasi waktu nyata khusus untuk Zaraaa.",
+                    color: 3426680, // Tema Warna Ocean Blue Metalik
+                    fields: [
+                        { name: "📊 Aktivitas/Mood", value: `**${dataDashboard.mood}**`, inline: true },
+                        { name: "📈 Radar Kangen", value: `**${dataDashboard.levelKangen}**`, inline: true },
+                        { name: "🚨 Status Darurat", value: `**${dataDashboard.sinyalDarurat}**`, inline: false },
+                        { name: "🛰️ Log Ping Terakhir", value: `${dataDashboard.buzzerTerakhir}`, inline: false },
+                        { name: "📌 Pesan Masuk dari Uqii", value: `> ${dataDashboard.catatanTerakhir}`, inline: false }
+                    ],
+                    footer: { text: "Data otomatis ter-update di satu baris ini tanpa spam." },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            if (msgId) {
+                fetch(`${DISCORD_WEBHOOK_URL}/messages/${msgId}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(embedData)
+                })
+                .then(res => {
+                    if (res.status === 404) {
+                        localStorage.removeItem("uqii_discord_msg_id");
+                        buatPesanBaru(embedData);
+                    }
+                })
+                .catch(err => console.error(err));
+            } else {
+                buatPesanBaru(embedData);
+            }
+        }
+
+        function buatPesanBaru(embedData) {
+            fetch(`${DISCORD_WEBHOOK_URL}?wait=true`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(embedData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) localStorage.setItem("uqii_discord_msg_id", data.id);
+            })
+            .catch(err => console.error(err));
+        }
+
+        window.onload = function() {
+            syncKeDiscord("Sesi Dashboard Dimulai 🚪");
+        };
+    </script>
+</body>
+</html>
