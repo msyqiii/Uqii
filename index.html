@@ -467,30 +467,73 @@
             kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI PENGIRIM EMBED DISCORD - FIX PERSIS SEPERTI GAMBAR ZARAAA
+        // FUNGSI UTAMA PENGIRIM EMBED DISCORD TERPADU (JADI SATU KOTAK UTUH)
         function kirimKeDiscord(namaAksi) {
             const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             
+            let embedTitle = "";
+            let actionHighlight = "";
+            let embedColor = 10980086; // Default: Ungu Cyberpunk
+
+            // Menentukan teks header dan warna garis pinggir kiri kotak secara dinamis sesuai tombol
+            switch(namaAksi) {
+                case "SYSTEM CORE ONLINE":
+                    embedTitle = "🛸 SYSTEM CORE ONLINE";
+                    actionHighlight = "Sistem pemancar dashboard Uqii telah aktif dan terhubung! ✨";
+                    embedColor = 2282478; // Cyan
+                    break;
+                case "MOOD TERKINI BERUBAH":
+                    embedTitle = "🛸 📊 UPDATE STATUS VITAL";
+                    actionHighlight = `Kabar terbaru dari Uqii saat ini: **${currentMood}**`;
+                    embedColor = 10980086; // Ungu
+                    break;
+                case "LEVEL KANGEN BERUBAH":
+                    embedTitle = "🛸 📥 SINKRONISASI KANGEN";
+                    actionHighlight = `Uqii baru saja menyetel slider kangen ke tingkat: **${currentLevelKangen}**`;
+                    embedColor = 3447003; // Blue Slider
+                    break;
+                case "RADAR TRANSMITTER PING":
+                    embedTitle = "🛸 🛰️ RADAR TRANSMITTER PING";
+                    actionHighlight = `🚨 **PING!** 🚨\n*${loveBuzzerStatus.replace('💥 DIPENCET! ', '')}*`;
+                    embedColor = 46332; // Toska Neon
+                    break;
+                case "EMERGENCY CORE TRIGGERED":
+                    embedTitle = "🚨 EMERGENCY CORE TRIGGERED";
+                    actionHighlight = "⚠️ **PROSEDUR DARURAT:** Uqii mendeteksi penurunan daya sistem/butuh perhatian segera!";
+                    embedColor = 15701837; // Merah
+                    break;
+                case "DEKRIPSI TERMINAL PESAN MASUK":
+                    embedTitle = "💬 DEKRIPSI TERMINAL PESAN MASUK";
+                    actionHighlight = "Sebuah memo transkrip pesan baru telah dikirimkan ke satelit.";
+                    embedColor = 16753920; // Amber Orange
+                    break;
+                default:
+                    embedTitle = "🌸 UQII'S LOVE DASHBOARD STATUS";
+                    actionHighlight = `Status kumulatif saat aktivitas "${namaAksi}" dipicu:`;
+            }
+
+            // Membangun satu kesatuan payload paket lengkap (All-in-one Box)
             const payload = {
-                username: "Uqii's Space Transmitter",
-                avatar_url: "https://i.imgur.com/4M34gMc.png", 
+                username: "Uqii's Dashboard v2.2",
+                avatar_url: "https://i.imgur.com/4M34gMc.png",
                 embeds: [
                     {
-                        title: `🌸 UQII'S LOVE DASHBOARD STATUS`,
-                        description: `Status kumulatif saat aktivitas "**${namaAksi}**" dipicu:\n\n` +
-                                     `📊 **Mood Terkini**\n**${currentMood}**\n\n` +
-                                     `📈 **Level Kangen**\n**${currentLevelKangen}**\n\n` +
+                        title: embedTitle,
+                        description: `${actionHighlight}\n\n` +
+                                     `📊 **Status Vital Terkini**\n**${currentMood}**\n\n` +
+                                     `📈 **Kalibrasi Kangen**\n**${currentLevelKangen}**\n\n` +
                                      `🚨 **Sinyal Darurat**\n**${sinyalDarurat}**\n\n` +
-                                     `      **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
+                                     `🔔 **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
                                      `📌 **Catatan Terakhir Uqii**\n> ${catatanTerakhir}`,
-                        color: 10980086, // Kode Desimal Hex untuk warna Ungu #a78bfa
+                        color: embedColor,
                         footer: {
-                            text: `Setiap aksi memicu satu ringkasan log lengkap terbaru. | Today at ${waktuSekarang}`
+                            text: `Uqii's Dashboard v2.2 // Paket Lengkap Mode | Today at ${waktuSekarang}`
                         }
                     }
                 ]
             };
 
+            // Header notifikasi teks mentah luar kotak
             payload.content = `📢 **Aktivitas Terbaru Uqii | Aksi: ${namaAksi}**`;
 
             fetch(DISCORD_WEBHOOK_URL, {
