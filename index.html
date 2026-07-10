@@ -308,8 +308,8 @@
             <div class="mood-box" onclick="kirimMood(this, '🎮 Gaming Time')">
                 <span>🎮</span><p>Mabar/Game</p>
             </div>
-            <div class="mood-box" onclick="kirimMood(this, '💻 Fokus Kerja')">
-                <span>💻</span><p>Fokus Project</p>
+            <div class="mood-box" onclick="kirimMood(this, '💻 Kerja')">
+                <span>💻</span><p>Project</p>
             </div>
             <div class="mood-box" onclick="kirimMood(this, '🥱 Mengantuk Berat')">
                 <span>🥱</span><p>Ngantuk</p>
@@ -354,12 +354,12 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1525025235416383538/6Q8rStevd5Rd7wgC3o--CB1Q2plxi66TNvoQPwMjTKB6TgKrP1tdyGjzNx1QG_VqH3Sw";
 
-        // VARIABEL GLOBAL STATUS TER-UPDATE UQII
+        // VARIABEL STATE GLOBAL STATUS UQII
         let currentLevelKangen = "50%";
-        let currentMood = "Belum Diatur";
+        let currentMood = "Belum Diatur 📋";
 
         const teksPing = [
-            "Uqii mendadak kepikiran Zaraaa gila-gilaan! 🛰️💥",
+            "Uqii mendadak kepikiran Zaraaa, Uqii kangenn Zaraaa! 🛰️💥",
             "Nge-ping tipis, cuma mau mastiin Zaraaa aman di sana 👀",
             "Sinyal kangen melesat menembus atmosfer menuju Zaraaa! 🚀⚡",
             "Cuma mau gangguin Zaraaa bentar, hehe kangen! 😜"
@@ -417,31 +417,30 @@
 
         document.getElementById("love-slider").addEventListener("change", function() {
             showToast(`Sinyal kangen disetel ke: ${currentLevelKangen}`, "📈");
-            kirimKeDiscord("🎚️ SINKRONISASI KANGEN", `Uqii baru saja menyetel slider kangen ke tingkat: **${currentLevelKangen}**`, 3447003);
+            kirimKeDiscord(`🎚️ **SINKRONISASI KANGEN**\n\nUqii baru saja menggeser tingkat kangennya menjadi **${currentLevelKangen}**!`);
         });
 
         function kirimMood(elemen, namaMood) {
             document.querySelectorAll('.mood-box').forEach(box => box.classList.remove('active'));
             elemen.classList.add('active');
             
-            // Simpan mood terbaru ke variabel global
             currentMood = namaMood;
 
             showToast(`Status: ${namaMood}`, "📊");
-            kirimKeDiscord("📊 UPDATE STATUS VITAL", `Kabar terbaru dari Uqii saat ini: **\`${namaMood}\`**`, 10181046);
+            kirimKeDiscord(`📊 **UPDATE STATUS VITAL**\n\nUqii memperbarui kondisi/aktivitasnya saat ini menjadi:\n👉 **${currentMood}**`);
         }
 
         function pencetBuzzer(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
             showToast("Radar diaktifkan, Zaraaa terpental pings!", "🛰️");
-            kirimKeDiscord("🛰️ RADAR TRANSMITTER PING", `🚨 **PING!** 🚨\n${teks}`, 1752220);
+            kirimKeDiscord(`📡 **RADAR TRANSMITTER PING**\n\n🚨 **Bzzzt! PING MASUK!** 🚨\n_${teks}_`);
         }
 
         function panggilDarurat(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 10); 
             showToast("Sinyal SOS terkirim ke Discord!", "🚨");
-            kirimKeDiscord("🚨 WARNING: EMERGENCY CORE TRIGGERED", `❤️‍🩹 **Uqii sangat membutuhkan support system penuh, validasi, & virtual hug secepatnya!** 🫂💜`, 15701044);
+            kirimKeDiscord(`🚨 **WARNING: EMERGENCY CORE TRIGGERED**\n\n❤️‍🩹 **Uqii lagi butuh support system penuh, validasi, atau virtual hug hangat dari Zaraaa secepatnya!** 🫂💜`);
         }
 
         function kirimCatatan() {
@@ -453,32 +452,16 @@
             }
             showToast("Pesan dikirim ke enkripsi terminal Discord!", "📌");
             area.value = "";
-            kirimKeDiscord("📌 DEKRIPSI TERMINAL PESAN MASUK", `\`\`\`fix\n${isi}\n\`\`\``, 10980351);
+            kirimKeDiscord(`📌 **DEKRIPSI TERMINAL PESAN MASUK**\n\n💬 **Pesan dari Uqii:**\n"${isi}"`);
         }
 
-        // FUNGSI UTAMA YANG SUDAH MODIFIKASI (PAKET LENGKAP PER AKSI)
-        function kirimKeDiscord(judul, deskripsi, warna) {
+        // FUNGSI PENGIRIM CHAT TEXT BIASA - PERSIS STRUKTUR DASHBOARD ZARAAA
+        function kirimKeDiscord(pesanAksi) {
+            // Menyusun lampiran paket status lengkap berformat teks estetik di bagian bawah pesan
+            const paketLengkapText = `${pesanAksi}\n\n===========================\n🛸 **STATUS REAL-TIME UQII NOW**\n\n📊 **Aktivitas:** ${currentMood}\n📈 **Level Kangen:** **${currentLevelKangen}**\n===========================`;
+
             const payload = {
-                embeds: [{
-                    title: `🛸 ${judul}`,
-                    description: deskripsi,
-                    color: warna,
-                    // Menambahkan Fields di dalam Embed untuk Status Ter-update Uqii
-                    fields: [
-                        {
-                            name: "📊 Status Vital Terkini",
-                            value: `**${currentMood}**`,
-                            inline: true
-                        },
-                        {
-                            name: "📈 Kalibrasi Kangen",
-                            value: `**${currentLevelKangen}**`,
-                            inline: true
-                        }
-                    ],
-                    footer: { text: "Uqii's Dashboard v2.2 // Paket Lengkap Mode" },
-                    timestamp: new Date().toISOString()
-                }]
+                content: paketLengkapText
             };
 
             fetch(DISCORD_WEBHOOK_URL, {
@@ -490,7 +473,7 @@
         }
 
         window.onload = function() {
-            kirimKeDiscord("SYSTEM CORE ONLINE", "Uqii baru saja membuka Love Dashboard v2.2. Sistem siap mentransmisikan sinyal! 🚀⚡", 65280);
+            kirimKeDiscord(`🚀 **SYSTEM CORE ONLINE**\n\nDashboard Uqii v2.3 berhasil dimuat dan siap digunakan! ✨`);
         };
     </script>
 </body>
