@@ -300,7 +300,7 @@
             <p>// Pilot Space</p>
         </div>
 
-        <div class="section-title">📊 STATUS VITAL & AKTIVITAS</div>
+        <div class="section-title">📊 STATUS AKTIVITAS</div>
         <div class="mood-container">
             <div class="mood-box" onclick="kirimMood(this, '😎 Santai / Aman')">
                 <span>😎</span><p>Santai</p>
@@ -322,7 +322,7 @@
             </div>
         </div>
 
-        <div class="section-title">📈 KALIBRASI TRANSMISI KANGEN</div>
+        <div class="section-title">📈 TELEMETRI KANGEN PILOT</div>
         <div class="bucin-wrapper">
             <div class="bucin-header">
                 <span>Low</span>
@@ -336,7 +336,7 @@
         <div class="action-grid">
             <div class="btn-action radar" onclick="pencetBuzzer(event)">
                 <span>📡</span>
-                <p>Nge-Ping Zaraaa</p>
+                <p>Ping Zaraaa</p>
             </div>
             <div class="btn-action emergency" onclick="panggilDarurat(event)">
                 <span>🚨</span>
@@ -344,7 +344,7 @@
             </div>
         </div>
 
-        <div class="section-title">💬 TERMINAL PAPAN PESAN</div>
+        <div class="section-title">💬 ENKRIPSI MEMO PAPAN PESAN</div>
         <div class="note-section">
             <textarea class="note-input" id="note-text" rows="2" placeholder="Ketik pesan acak atau kabar penting di sini..."></textarea>
             <button class="btn-send-note" onclick="kirimCatatan()">Kirim Pesan Ke Zaraaa ⚡</button>
@@ -520,8 +520,8 @@
                     {
                         title: embedTitle,
                         description: `${actionHighlight}\n\n` +
-                                     `📊 **Status Vital Terkini**\n**${currentMood}**\n\n` +
-                                     `📈 **Kalibrasi Kangen**\n**${currentLevelKangen}**\n\n` +
+                                     `📊 **Status Aktivitas**\n**${currentMood}**\n\n` +
+                                     `📈 **Telemetri Kangen**\n**${currentLevelKangen}**\n\n` +
                                      `🚨 **Sinyal Darurat**\n**${sinyalDarurat}**\n\n` +
                                      `🔔 **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
                                      `📌 **Catatan Terakhir Uqii**\n> ${catatanTerakhir}`,
