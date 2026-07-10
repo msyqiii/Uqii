@@ -309,7 +309,7 @@
                 <span>🎮</span><p>Mabar/Game</p>
             </div>
             <div class="mood-box" onclick="kirimMood(this, '💻 Fokus Kerja')">
-                <span>💻</span><p>Project</p>
+                <span>💻</span><p>Fokus Project</p>
             </div>
             <div class="mood-box" onclick="kirimMood(this, '🥱 Mengantuk Berat')">
                 <span>🥱</span><p>Ngantuk</p>
@@ -352,9 +352,11 @@
     </div>
 
     <script>
-        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1525025235416383538/6Q8rStevd5Rd7wgC3o--CB1Q2plxi66TNvoQPwMjTKB6TgKrP1tdyGjzNx1QG_VqH3Sw";
+        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
 
+        // VARIABEL GLOBAL STATUS TER-UPDATE UQII
         let currentLevelKangen = "50%";
+        let currentMood = "Belum Diatur";
 
         const teksPing = [
             "Uqii mendadak kepikiran Zaraaa gila-gilaan! 🛰️💥",
@@ -415,12 +417,16 @@
 
         document.getElementById("love-slider").addEventListener("change", function() {
             showToast(`Sinyal kangen disetel ke: ${currentLevelKangen}`, "📈");
-            kirimKeDiscord("🎚️ SINKRONISASI KANGEN", `Uqii baru saja menggeser slider kangen ke tingkat: **${currentLevelKangen}**!`, 3447003);
+            kirimKeDiscord("🎚️ SINKRONISASI KANGEN", `Uqii baru saja menyetel slider kangen ke tingkat: **${currentLevelKangen}**`, 3447003);
         });
 
         function kirimMood(elemen, namaMood) {
             document.querySelectorAll('.mood-box').forEach(box => box.classList.remove('active'));
             elemen.classList.add('active');
+            
+            // Simpan mood terbaru ke variabel global
+            currentMood = namaMood;
+
             showToast(`Status: ${namaMood}`, "📊");
             kirimKeDiscord("📊 UPDATE STATUS VITAL", `Kabar terbaru dari Uqii saat ini: **\`${namaMood}\`**`, 10181046);
         }
@@ -450,13 +456,27 @@
             kirimKeDiscord("📌 DEKRIPSI TERMINAL PESAN MASUK", `\`\`\`fix\n${isi}\n\`\`\``, 10980351);
         }
 
+        // FUNGSI UTAMA YANG SUDAH MODIFIKASI (PAKET LENGKAP PER AKSI)
         function kirimKeDiscord(judul, deskripsi, warna) {
             const payload = {
                 embeds: [{
                     title: `🛸 ${judul}`,
                     description: deskripsi,
                     color: warna,
-                    footer: { text: "Uqii's Dashboard v2.1 // Opsi 2 (Performa Optimized)" },
+                    // Menambahkan Fields di dalam Embed untuk Status Ter-update Uqii
+                    fields: [
+                        {
+                            name: "📊 Status Vital Terkini",
+                            value: `**${currentMood}**`,
+                            inline: true
+                        },
+                        {
+                            name: "📈 Kalibrasi Kangen",
+                            value: `**${currentLevelKangen}**`,
+                            inline: true
+                        }
+                    ],
+                    footer: { text: "Uqii's Dashboard v2.2 // Paket Lengkap Mode" },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -470,7 +490,7 @@
         }
 
         window.onload = function() {
-            kirimKeDiscord("SYSTEM CORE ONLINE", "Uqii baru saja membuka Love Dashboard v2.1. Sistem siap mentransmisikan sinyal! 🚀⚡", 65280);
+            kirimKeDiscord("SYSTEM CORE ONLINE", "Uqii baru saja membuka Love Dashboard v2.2. Sistem siap mentransmisikan sinyal! 🚀⚡", 65280);
         };
     </script>
 </body>
