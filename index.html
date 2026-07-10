@@ -357,6 +357,9 @@
         // VARIABEL STATE GLOBAL STATUS UQII
         let currentLevelKangen = "50%";
         let currentMood = "Belum Diatur 📋";
+        let sinyalDarurat = "Kondisi Aman ✅";
+        let loveBuzzerStatus = "Belum ada interaksi 📡";
+        let catatanTerakhir = "Belum ada pesan terbaru 💬";
 
         const teksPing = [
             "Uqii mendadak kepikiran Zaraaa, Uqii kangenn Zaraaa! 🛰️💥",
@@ -417,7 +420,7 @@
 
         document.getElementById("love-slider").addEventListener("change", function() {
             showToast(`Sinyal kangen disetel ke: ${currentLevelKangen}`, "📈");
-            kirimKeDiscord(`🎚️ **SINKRONISASI KANGEN**\n\nUqii baru saja menggeser tingkat kangennya menjadi **${currentLevelKangen}**!`);
+            kirimKeDiscord("LEVEL KANGEN BERUBAH");
         });
 
         function kirimMood(elemen, namaMood) {
@@ -427,20 +430,26 @@
             currentMood = namaMood;
 
             showToast(`Status: ${namaMood}`, "📊");
-            kirimKeDiscord(`📊 **UPDATE STATUS VITAL**\n\nUqii memperbarui kondisi/aktivitasnya saat ini menjadi:\n👉 **${currentMood}**`);
+            kirimKeDiscord("MOOD TERKINI BERUBAH");
         }
 
         function pencetBuzzer(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
+            
+            loveBuzzerStatus = `💥 DIPENCET! "${teks}"`;
+            
             showToast("Radar diaktifkan, Zaraaa terpental pings!", "🛰️");
-            kirimKeDiscord(`📡 **RADAR TRANSMITTER PING**\n\n🚨 **Bzzzt! PING MASUK!** 🚨\n_${teks}_`);
+            kirimKeDiscord("RADAR TRANSMITTER PING");
         }
 
         function panggilDarurat(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 10); 
+            
+            sinyalDarurat = "🚨 Uqii lagi butuh support system penuh/hug secepatnya!";
+            
             showToast("Sinyal SOS terkirim ke Discord!", "🚨");
-            kirimKeDiscord(`🚨 **WARNING: EMERGENCY CORE TRIGGERED**\n\n❤️‍🩹 **Uqii lagi butuh support system penuh, validasi, atau virtual hug hangat dari Zaraaa secepatnya!** 🫂💜`);
+            kirimKeDiscord("EMERGENCY CORE TRIGGERED");
         }
 
         function kirimCatatan() {
@@ -450,15 +459,40 @@
                 showToast("Pesan tidak boleh kosong!", "⚠️");
                 return;
             }
+            
+            catatanTerakhir = isi;
+            
             showToast("Pesan dikirim ke enkripsi terminal Discord!", "📌");
             area.value = "";
-            kirimKeDiscord(`📌 **DEKRIPSI TERMINAL PESAN MASUK**\n\n💬 **Pesan dari Uqii:**\n"${isi}"`);
+            kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI PENGIRIM CHAT TEXT BIASA - PERSIS STRUKTUR DASHBOARD ZARAAA
-        function kirimKeDiscord(pesanAksi) {
-            // Menyusun lampiran paket status lengkap berformat teks estetik di bagian bawah pesan
-            const paketLengkapText = `${pesanAksi}\n\n===========================\n🛸 **STATUS REAL-TIME UQII NOW**\n\n📊 **Aktivitas:** ${currentMood}\n📈 **Level Kangen:** **${currentLevelKangen}**\n===========================`;
+        // FUNGSI PENGIRIM DENGAN FORMAT PERSIS SEPERTI GAMBAR ZARAAA
+        function kirimKeDiscord(namaAksi) {
+            const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            // Menyusun teks dengan struktur Markdown Discord agar rapi dan presisi seperti gambar
+            const paketLengkapText = `📣 **Aktivitas Terbaru Uqii | Aksi: 📈 LEVEL KANGEN BERUBAH**
+
+🌸 **UQII'S LOVE DASHBOARD STATUS**
+Status kumulatif saat aktivitas "📈 LEVEL KANGEN BERUBAH" dipicu:
+
+📊 **Mood Terkini**
+**${currentMood}**
+
+📈 **Level Kangen**
+**${currentLevelKangen}**
+
+💥 **Sinyal Darurat**
+**${sinyalDarurat}**
+
+🔔 **Love Buzzer Status**
+*${loveBuzzerStatus}*
+
+📌 **Catatan Terakhir Uqii**
+> ${catatanTerakhir}
+
+*Setiap aksi memicu satu ringkasan log lengkap terbaru. | Today at ${waktuSekarang}*`;
 
             const payload = {
                 content: paketLengkapText
@@ -470,10 +504,15 @@
                 body: JSON.stringify(payload)
             })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
+            
+            // Mengembalikan status darurat ke aman jika sebelumnya dipicu
+            if (namaAksi === "EMERGENCY CORE TRIGGERED") {
+                sinyalDarurat = "Kondisi Aman ✅";
+            }
         }
 
         window.onload = function() {
-            kirimKeDiscord(`🚀 **SYSTEM CORE ONLINE**\n\nDashboard Uqii v2.3 berhasil dimuat dan siap digunakan! ✨`);
+            kirimKeDiscord("SYSTEM CORE ONLINE");
         };
     </script>
 </body>
