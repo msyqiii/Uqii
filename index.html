@@ -420,7 +420,7 @@
 
         document.getElementById("love-slider").addEventListener("change", function() {
             showToast(`Sinyal kangen disetel ke: ${currentLevelKangen}`, "📈");
-            kirimKeDiscord("📈 LEVEL KANGEN BERUBAH");
+            kirimKeDiscord("LEVEL KANGEN BERUBAH");
         });
 
         function kirimMood(elemen, namaMood) {
@@ -430,7 +430,7 @@
             currentMood = namaMood;
 
             showToast(`Status: ${namaMood}`, "📊");
-            kirimKeDiscord("📊 MOOD TERKINI BERUBAH");
+            kirimKeDiscord("MOOD TERKINI BERUBAH");
         }
 
         function pencetBuzzer(e) {
@@ -440,7 +440,7 @@
             loveBuzzerStatus = `💥 DIPENCET! "${teks}"`;
             
             showToast("Radar diaktifkan, Zaraaa terpental pings!", "🛰️");
-            kirimKeDiscord("📡 RADAR TRANSMITTER PING");
+            kirimKeDiscord("RADAR TRANSMITTER PING");
         }
 
         function panggilDarurat(e) {
@@ -449,7 +449,7 @@
             sinyalDarurat = "🚨 Uqii lagi butuh support system penuh/hug secepatnya!";
             
             showToast("Sinyal SOS terkirim ke Discord!", "🚨");
-            kirimKeDiscord("🚨 EMERGENCY CORE TRIGGERED");
+            kirimKeDiscord("EMERGENCY CORE TRIGGERED");
         }
 
         function kirimCatatan() {
@@ -464,39 +464,34 @@
             
             showToast("Pesan dikirim ke enkripsi terminal Discord!", "📌");
             area.value = "";
-            kirimKeDiscord("📌 DEKRIPSI TERMINAL PESAN MASUK");
+            kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI UTAMA PENGIRIM DENGAN AKSI DINAMIS PERSIS SEPERTI ZARAAA
+        // FUNGSI PENGIRIM EMBED DISCORD - FIX PERSIS SEPERTI GAMBAR ZARAAA
         function kirimKeDiscord(namaAksi) {
             const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             
-            // Di sini namaAksi disisipkan langsung secara dinamis menggunakan `${namaAksi}`
-            const paketLengkapText = `📢 **Aktivitas Terbaru Uqii | Aksi: ${namaAksi}**
-
-🌸 **UQII'S LOVE DASHBOARD STATUS**
-Status kumulatif saat aktivitas "${namaAksi}" dipicu:
-
-📊 **Mood Terkini**
-${currentMood}
-
-📈 **Level Kangen**
-**${currentLevelKangen}**
-
-💥 **Sinyal Darurat**
-${sinyalDarurat}
-
-      **Love Buzzer Status**
-*${loveBuzzerStatus}*
-
-📌 **Catatan Terakhir Uqii**
-> ${catatanTerakhir}
-
-*Setiap aksi memicu satu ringkasan log lengkap terbaru. | Today at ${waktuSekarang}*`;
-
             const payload = {
-                content: paketLengkapText
+                username: "Uqii's Space Transmitter",
+                avatar_url: "https://i.imgur.com/4M34gMc.png", 
+                embeds: [
+                    {
+                        title: `🌸 UQII'S LOVE DASHBOARD STATUS`,
+                        description: `Status kumulatif saat aktivitas "**${namaAksi}**" dipicu:\n\n` +
+                                     `📊 **Mood Terkini**\n**${currentMood}**\n\n` +
+                                     `📈 **Level Kangen**\n**${currentLevelKangen}**\n\n` +
+                                     `🚨 **Sinyal Darurat**\n**${sinyalDarurat}**\n\n` +
+                                     `      **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
+                                     `📌 **Catatan Terakhir Uqii**\n> ${catatanTerakhir}`,
+                        color: 10980086, // Kode Desimal Hex untuk warna Ungu #a78bfa
+                        footer: {
+                            text: `Setiap aksi memicu satu ringkasan log lengkap terbaru. | Today at ${waktuSekarang}`
+                        }
+                    }
+                ]
             };
+
+            payload.content = `📢 **Aktivitas Terbaru Uqii | Aksi: ${namaAksi}**`;
 
             fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
@@ -505,14 +500,13 @@ ${sinyalDarurat}
             })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
             
-            // Kembalikan status darurat ke kondisi aman setelah tombol darurat terkirim log-nya
-            if (namaAksi === "🚨 EMERGENCY CORE TRIGGERED") {
+            if (namaAksi === "EMERGENCY CORE TRIGGERED") {
                 sinyalDarurat = "Kondisi Aman ✅";
             }
         }
 
         window.onload = function() {
-            kirimKeDiscord("✨ SYSTEM CORE ONLINE");
+            kirimKeDiscord("SYSTEM CORE ONLINE");
         };
     </script>
 </body>
