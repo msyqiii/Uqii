@@ -420,7 +420,7 @@
 
         document.getElementById("love-slider").addEventListener("change", function() {
             showToast(`Sinyal kangen disetel ke: ${currentLevelKangen}`, "📈");
-            kirimKeDiscord("LEVEL KANGEN BERUBAH");
+            kirimKeDiscord("📈 LEVEL KANGEN BERUBAH");
         });
 
         function kirimMood(elemen, namaMood) {
@@ -430,7 +430,7 @@
             currentMood = namaMood;
 
             showToast(`Status: ${namaMood}`, "📊");
-            kirimKeDiscord("MOOD TERKINI BERUBAH");
+            kirimKeDiscord("📊 MOOD TERKINI BERUBAH");
         }
 
         function pencetBuzzer(e) {
@@ -440,7 +440,7 @@
             loveBuzzerStatus = `💥 DIPENCET! "${teks}"`;
             
             showToast("Radar diaktifkan, Zaraaa terpental pings!", "🛰️");
-            kirimKeDiscord("RADAR TRANSMITTER PING");
+            kirimKeDiscord("📡 RADAR TRANSMITTER PING");
         }
 
         function panggilDarurat(e) {
@@ -449,7 +449,7 @@
             sinyalDarurat = "🚨 Uqii lagi butuh support system penuh/hug secepatnya!";
             
             showToast("Sinyal SOS terkirim ke Discord!", "🚨");
-            kirimKeDiscord("EMERGENCY CORE TRIGGERED");
+            kirimKeDiscord("🚨 EMERGENCY CORE TRIGGERED");
         }
 
         function kirimCatatan() {
@@ -464,29 +464,29 @@
             
             showToast("Pesan dikirim ke enkripsi terminal Discord!", "📌");
             area.value = "";
-            kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
+            kirimKeDiscord("📌 DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI PENGIRIM DENGAN FORMAT PERSIS SEPERTI GAMBAR ZARAAA
+        // FUNGSI UTAMA PENGIRIM DENGAN AKSI DINAMIS PERSIS SEPERTI ZARAAA
         function kirimKeDiscord(namaAksi) {
             const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             
-            // Menyusun teks dengan struktur Markdown Discord agar rapi dan presisi seperti gambar
-            const paketLengkapText = `📣 **Aktivitas Terbaru Uqii | Aksi: 📈 LEVEL KANGEN BERUBAH**
+            // Di sini namaAksi disisipkan langsung secara dinamis menggunakan `${namaAksi}`
+            const paketLengkapText = `📢 **Aktivitas Terbaru Uqii | Aksi: ${namaAksi}**
 
 🌸 **UQII'S LOVE DASHBOARD STATUS**
-Status kumulatif saat aktivitas "📈 LEVEL KANGEN BERUBAH" dipicu:
+Status kumulatif saat aktivitas "${namaAksi}" dipicu:
 
 📊 **Mood Terkini**
-**${currentMood}**
+${currentMood}
 
 📈 **Level Kangen**
 **${currentLevelKangen}**
 
 💥 **Sinyal Darurat**
-**${sinyalDarurat}**
+${sinyalDarurat}
 
-🔔 **Love Buzzer Status**
+      **Love Buzzer Status**
 *${loveBuzzerStatus}*
 
 📌 **Catatan Terakhir Uqii**
@@ -505,14 +505,14 @@ Status kumulatif saat aktivitas "📈 LEVEL KANGEN BERUBAH" dipicu:
             })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
             
-            // Mengembalikan status darurat ke aman jika sebelumnya dipicu
-            if (namaAksi === "EMERGENCY CORE TRIGGERED") {
+            // Kembalikan status darurat ke kondisi aman setelah tombol darurat terkirim log-nya
+            if (namaAksi === "🚨 EMERGENCY CORE TRIGGERED") {
                 sinyalDarurat = "Kondisi Aman ✅";
             }
         }
 
         window.onload = function() {
-            kirimKeDiscord("SYSTEM CORE ONLINE");
+            kirimKeDiscord("✨ SYSTEM CORE ONLINE");
         };
     </script>
 </body>
