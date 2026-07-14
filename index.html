@@ -467,52 +467,53 @@
             kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI UTAMA PENGIRIM EMBED DISCORD TERPADU (JADI SATU KOTAK UTUH)
+        // FUNGSI UTAMA PENGIRIM EMBED DISCORD
         function kirimKeDiscord(namaAksi) {
             const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             
             let embedTitle = "";
             let actionHighlight = "";
-            let embedColor = 10980086; // Default: Ungu Cyberpunk
+            let embedColor = 0xa78bfa; // Default: Ungu Cyberpunk
 
-            // Menentukan teks header dan warna garis pinggir kiri kotak secara dinamis sesuai tombol
+            // Menentukan teks header dan warna garis kotak secara dinamis menggunakan format 0xHex
             switch(namaAksi) {
                 case "SYSTEM CORE ONLINE":
                     embedTitle = "🛸 SYSTEM CORE ONLINE";
                     actionHighlight = "Sistem pemancar dashboard Uqii telah aktif dan terhubung! ✨";
-                    embedColor = 2282478; // Cyan
+                    embedColor = 0x22d3ee; 
                     break;
                 case "MOOD TERKINI BERUBAH":
                     embedTitle = "🛸 📊 UPDATE STATUS VITAL";
                     actionHighlight = `Kabar terbaru dari Uqii saat ini: **${currentMood}**`;
-                    embedColor = 10980086; // Ungu
+                    embedColor = 0xa78bfa; 
                     break;
                 case "LEVEL KANGEN BERUBAH":
                     embedTitle = "🛸 📥 SINKRONISASI KANGEN";
                     actionHighlight = `Uqii baru saja menyetel slider kangen ke tingkat: **${currentLevelKangen}**`;
-                    embedColor = 3447003; // Blue Slider
+                    embedColor = 0x3b82f6; 
                     break;
                 case "RADAR TRANSMITTER PING":
                     embedTitle = "🛸 🛰️ RADAR TRANSMITTER PING";
                     actionHighlight = `🚨 **PING!** 🚨\n*${loveBuzzerStatus.replace('💥 DIPENCET! ', '')}*`;
-                    embedColor = 46332; // Toska Neon
+                    embedColor = 0x06b2d2; 
                     break;
                 case "EMERGENCY CORE TRIGGERED":
                     embedTitle = "🚨 EMERGENCY CORE TRIGGERED";
                     actionHighlight = "⚠️ **PROSEDUR DARURAT:** Uqii mendeteksi penurunan daya sistem/butuh perhatian segera!";
-                    embedColor = 15701837; // Merah
+                    embedColor = 0xef4444; 
                     break;
                 case "DEKRIPSI TERMINAL PESAN MASUK":
                     embedTitle = "💬 DEKRIPSI TERMINAL PESAN MASUK";
                     actionHighlight = "Sebuah memo transkrip pesan baru telah dikirimkan ke satelit.";
-                    embedColor = 16753920; // Amber Orange
+                    embedColor = 0xf59e0b; 
                     break;
                 default:
                     embedTitle = "🌸 UQII'S LOVE DASHBOARD STATUS";
                     actionHighlight = `Status kumulatif saat aktivitas "${namaAksi}" dipicu:`;
+                    embedColor = 0xa78bfa;
             }
 
-            // Membangun satu kesatuan payload paket lengkap (All-in-one Box)
+            // Membangun satu kesatuan payload paket lengkap (All-in-one Box) tanpa properti payload.content
             const payload = {
                 username: "Uqii's Dashboard v2.2",
                 avatar_url: "https://i.imgur.com/4M34gMc.png",
@@ -532,9 +533,6 @@
                     }
                 ]
             };
-
-            // Header notifikasi teks mentah luar kotak
-            payload.content = `📢 **Aktivitas Terbaru Uqii | Aksi: ${namaAksi}**`;
 
             fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
